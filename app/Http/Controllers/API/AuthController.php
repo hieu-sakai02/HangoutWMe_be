@@ -176,6 +176,8 @@ class AuthController extends Controller
             'email' => 'sometimes|string|email|max:255|unique:users,email,'.$user->id,
             'password' => 'sometimes|string|min:8',
             'avatar' => 'sometimes|string',
+            'dob' => 'sometimes|date|nullable',
+            'address' => 'sometimes|string|nullable',
         ]);
 
         if ($validator->fails()) {
@@ -202,6 +204,14 @@ class AuthController extends Controller
         
         if ($request->has('avatar')) {
             $data['avatar'] = $request->avatar;
+        }
+        
+        if ($request->has('dob')) {
+            $data['dob'] = $request->dob;
+        }
+        
+        if ($request->has('address')) {
+            $data['address'] = $request->address;
         }
         
         $user->update($data);
