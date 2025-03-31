@@ -160,4 +160,74 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Update the authenticated user's profile.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'sometimes|string|min:8',
+            'avatar' => 'sometimes|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $data = [];
+        
+        if ($request->has('name')) {
+            $data['name'] = $request->name;
+        }
+        
+        if ($request->has('email')) {
+            $data['email'] = $request->email;
+        }
+        
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+        
+        if ($request->has('avatar')) {
+            $data['avatar'] = $request->avatar;
+        }
+        
+        $user->update($data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User updated successfully',
+            'data' => [
+                'user' => $user
+            ]
+        ], 200);
+    }
+
+    /**
+     * Logout the authenticated user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully logged out'
+        ]);
+    }
 }

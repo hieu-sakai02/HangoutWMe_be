@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 Route::prefix('users')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::put('update', [AuthController::class, 'update'])->middleware('auth:sanctum');
     Route::get('google', [AuthController::class, 'redirectToGoogle']);
     Route::get('google/callback', [AuthController::class, 'handleGoogleCallback']);
     // Add other auth-related routes
