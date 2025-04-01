@@ -161,6 +161,16 @@ class AuthController extends Controller
         }
     }
 
+    public function me(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'user' => $request->user()
+            ]
+        ]);
+    }
+
     /**
      * Update the authenticated user's profile.
      *

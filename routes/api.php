@@ -17,6 +17,7 @@ Route::prefix('users')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::put('update', [AuthController::class, 'update'])->middleware('auth:sanctum');
+    Route::get('me', [AuthController::class, 'me'])->middleware('auth:sanctum');
     Route::get('google', [AuthController::class, 'redirectToGoogle']);
     Route::get('google/callback', [AuthController::class, 'handleGoogleCallback']);
     // Add other auth-related routes
