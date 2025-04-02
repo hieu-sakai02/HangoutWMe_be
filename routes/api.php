@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
-// Import other controllers here, for example:
-// use App\Http\Controllers\API\UserController;
-// use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\CoffeeShopController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -25,26 +23,13 @@ Route::prefix('users')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| User Routes
+| Coffee Shop Routes
 |--------------------------------------------------------------------------
 */
-// Example for a UserController
-// Route::controller(UserController::class)->prefix('users')->group(function () {
-//     Route::get('/', 'index');
-//     Route::get('/{id}', 'show');
-//     Route::put('/{id}', 'update');
-//     Route::delete('/{id}', 'destroy');
-// });
-
-/*
-|--------------------------------------------------------------------------
-| Other Controller Routes
-|--------------------------------------------------------------------------
-*/
-// Example for another controller
-// Route::controller(ProductController::class)->prefix('products')->group(function () {
-//     Route::get('/', 'index');
-//     Route::post('/', 'store');
-//     Route::get('/{id}', 'show');
-//     // etc.
-// });
+Route::prefix('coffee-shops')->group(function () {
+    Route::get('/', [CoffeeShopController::class, 'index']);
+    Route::get('/{id}', [CoffeeShopController::class, 'show']);
+    Route::post('/', [CoffeeShopController::class, 'store']);
+    Route::put('/{id}', [CoffeeShopController::class, 'update']);
+    Route::delete('/{id}', [CoffeeShopController::class, 'destroy']);
+});
