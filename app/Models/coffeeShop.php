@@ -24,4 +24,18 @@ class coffeeShop extends Model
         'description',
         'show'
     ];
+
+    protected $appends = ['rating'];
+
+    public function ratings()
+    {
+        return $this->hasMany(ratingCoffeeShop::class, 'coffee_shop_id');
+    }
+
+    public function getRatingAttribute()
+    {
+        return $this->ratings()
+            ->where('show', true)
+            ->avg('rating') ?? 0;
+    }
 }

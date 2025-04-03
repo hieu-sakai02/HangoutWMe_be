@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class favCoffeeShop extends Model
+class ratingCoffeeShop extends Model
 {
     protected $fillable = [
         'user_id',
         'coffee_shop_id',
-        'is_favorite'
+        'comment',
+        'rating',
+        'show'
     ];
 
     public function user()

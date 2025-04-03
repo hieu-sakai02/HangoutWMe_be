@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\coffeeShop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CoffeeShopController extends Controller
 {
@@ -13,7 +14,16 @@ class CoffeeShopController extends Controller
      */
     public function index()
     {
-        $coffeeShops = coffeeShop::where('show', true)->get();
+        $coffeeShops = coffeeShop::where('show', true)
+            ->withAvg(['ratings' => function($query) {
+                $query->where('show', true);
+            }], 'rating')
+            ->get()
+            ->map(function($shop) {
+                $shop->rating = $shop->ratings_avg_rating ?? 0;
+                return $shop;
+            });
+
         return response()->json([
             'status' => 'success',
             'data' => $coffeeShops
@@ -95,11 +105,41 @@ class CoffeeShopController extends Controller
      */
     public function show($id)
     {
-        $coffeeShop = coffeeShop::where('show', true)->findOrFail($id);
+        $coffeeShop = coffeeShop::where('show', true)
+            ->withAvg(['ratings' => function($query) {
+                $query->where('show', true);
+            }], 'rating')
+            ->findOrFail($id);
         
+        $coffeeShop->rating = $coffeeShop->ratings_avg_rating ?? 0;
+
         return response()->json([
             'status' => 'success',
             'data' => $coffeeShop
+        ]);
+    }
+
+    /**
+     * Get top 10 coffee shops by rating
+     */
+    public function getTopRated()
+    {
+        $topCoffeeShops = coffeeShop::where('show', true)
+            ->withCount(['ratings as average_rating' => function($query) {
+                $query->select(DB::raw('coalesce(avg(rating),0)'))
+                    ->where('show', true);
+            }])
+            ->orderByDesc('average_rating')
+            ->limit(10)
+            ->get()
+            ->map(function($shop) {
+                $shop->rating = round($shop->average_rating, 1);
+                return $shop;
+            });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $topCoffeeShops
         ]);
     }
 }

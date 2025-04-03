@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CoffeeShopController;
 use App\Http\Controllers\API\FavCoffeeShopController;
+use App\Http\Controllers\API\RatingCoffeeShopController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,7 @@ Route::prefix('users')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('coffee-shops')->group(function () {
+    Route::get('/top-rated', [CoffeeShopController::class, 'getTopRated']);
     Route::get('/', [CoffeeShopController::class, 'index']);
     Route::get('/{id}', [CoffeeShopController::class, 'show']);
     Route::post('/', [CoffeeShopController::class, 'store']);
@@ -44,4 +46,16 @@ Route::prefix('favorite-coffee-shops')->group(function () {
     Route::get('/user/{userId}', [FavCoffeeShopController::class, 'getByUser']);
     Route::post('/', [FavCoffeeShopController::class, 'store']);
     Route::put('/user/{userId}/coffee-shop/{coffeeShopId}', [FavCoffeeShopController::class, 'update']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Coffee Shop Rating Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('coffee-shop-ratings')->group(function () {
+    Route::get('/coffee-shop/{coffeeShopId}', [RatingCoffeeShopController::class, 'getByCoffeeShop']);
+    Route::post('/', [RatingCoffeeShopController::class, 'store']);
+    Route::put('/{id}', [RatingCoffeeShopController::class, 'update']);
+    Route::delete('/{id}', [RatingCoffeeShopController::class, 'destroy']);
 });
