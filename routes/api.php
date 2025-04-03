@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CoffeeShopController;
+use App\Http\Controllers\API\FavCoffeeShopController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -32,4 +33,15 @@ Route::prefix('coffee-shops')->group(function () {
     Route::post('/', [CoffeeShopController::class, 'store']);
     Route::put('/{id}', [CoffeeShopController::class, 'update']);
     Route::delete('/{id}', [CoffeeShopController::class, 'destroy']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Favorite Coffee Shop Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('favorite-coffee-shops')->group(function () {
+    Route::get('/user/{userId}', [FavCoffeeShopController::class, 'getByUser']);
+    Route::post('/', [FavCoffeeShopController::class, 'store']);
+    Route::put('/user/{userId}/coffee-shop/{coffeeShopId}', [FavCoffeeShopController::class, 'update']);
 });
