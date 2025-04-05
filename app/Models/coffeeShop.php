@@ -22,10 +22,15 @@ class coffeeShop extends Model
         'website',
         'thumbnail',
         'description',
+        'pictures',
         'show'
     ];
 
     protected $appends = ['rating'];
+
+    protected $casts = [
+        'pictures' => 'array'
+    ];
 
     public function ratings()
     {

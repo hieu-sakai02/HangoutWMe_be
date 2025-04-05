@@ -47,6 +47,8 @@ class CoffeeShopController extends Controller
             'website' => 'nullable|url',
             'thumbnail' => 'required|string',
             'description' => 'required|string',
+            'pictures' => 'nullable|array',
+            'pictures.*' => 'string'
         ]);
 
         $validated['show'] = true; 
@@ -69,12 +71,18 @@ class CoffeeShopController extends Controller
 
         $validated = $request->validate([
             'name' => 'string|max:255',
-            'address' => 'string',
-            'phone' => 'string',
-            'email' => 'email',
-            'website' => 'url',
+            'houseNumber' => 'string',
+            'street' => 'nullable|string',
+            'ward' => 'string',
+            'district' => 'string',
+            'city' => 'string',
+            'phone' => 'nullable|string',
+            'email' => 'nullable|email',
+            'website' => 'nullable|url',
             'thumbnail' => 'string',
             'description' => 'string',
+            'pictures' => 'nullable|array',
+            'pictures.*' => 'string'
         ]);
 
         $coffeeShop->update($validated);
