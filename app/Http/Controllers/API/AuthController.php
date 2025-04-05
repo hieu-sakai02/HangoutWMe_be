@@ -188,6 +188,7 @@ class AuthController extends Controller
             'avatar' => 'sometimes|string',
             'dob' => 'sometimes|date|nullable',
             'address' => 'sometimes|string|nullable',
+            'isAdmin' => 'sometimes|boolean'
         ]);
 
         if ($validator->fails()) {
@@ -222,6 +223,10 @@ class AuthController extends Controller
         
         if ($request->has('address')) {
             $data['address'] = $request->address;
+        }
+
+        if ($request->has('isAdmin')) {
+            $data['isAdmin'] = $request->isAdmin;
         }
         
         $user->update($data);
