@@ -23,13 +23,30 @@ class coffeeShop extends Model
         'thumbnail',
         'description',
         'pictures',
-        'show'
+        'show',
+        'carPark',
+        'petFriendly',
+        'wifi',
+        'cake',
+        'outdoorSeating',
+        'indoorSeating',
+        'openTime',
+        'closeTime',
+        'overNight'
     ];
 
     protected $appends = ['rating'];
 
     protected $casts = [
-        'pictures' => 'array'
+        'pictures' => 'array',
+        'carPark' => 'boolean',
+        'petFriendly' => 'boolean',
+        'cake' => 'boolean',
+        'outdoorSeating' => 'boolean',
+        'indoorSeating' => 'boolean',
+        'overNight' => 'boolean',
+        'openTime' => 'datetime:H:i',
+        'closeTime' => 'datetime:H:i'
     ];
 
     public function ratings()

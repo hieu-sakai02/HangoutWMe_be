@@ -48,7 +48,16 @@ class CoffeeShopController extends Controller
             'thumbnail' => 'required|string',
             'description' => 'required|string',
             'pictures' => 'nullable|array',
-            'pictures.*' => 'string'
+            'pictures.*' => 'string',
+            'carPark' => 'nullable|boolean',
+            'petFriendly' => 'nullable|boolean',
+            'wifi' => 'nullable|string',
+            'cake' => 'nullable|boolean',
+            'outdoorSeating' => 'nullable|boolean',
+            'indoorSeating' => 'nullable|boolean',
+            'openTime' => 'nullable|date_format:H:i',
+            'closeTime' => 'nullable|date_format:H:i',
+            'overNight' => 'nullable|boolean'
         ]);
 
         $validated['show'] = true; 
@@ -70,27 +79,37 @@ class CoffeeShopController extends Controller
         $coffeeShop = coffeeShop::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'string|max:255',
-            'houseNumber' => 'string',
-            'street' => 'nullable|string',
-            'ward' => 'string',
-            'district' => 'string',
-            'city' => 'string',
-            'phone' => 'nullable|string',
-            'email' => 'nullable|email',
-            'website' => 'nullable|url',
-            'thumbnail' => 'string',
-            'description' => 'string',
-            'pictures' => 'nullable|array',
-            'pictures.*' => 'string'
+            'name' => 'sometimes|string|max:255',
+            'houseNumber' => 'sometimes|string',
+            'street' => 'sometimes|nullable|string',
+            'ward' => 'sometimes|string',
+            'district' => 'sometimes|string',
+            'city' => 'sometimes|string',
+            'phone' => 'sometimes|nullable|string',
+            'email' => 'sometimes|nullable|email',
+            'website' => 'sometimes|nullable|url',
+            'thumbnail' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'pictures' => 'sometimes|nullable|array',
+            'pictures.*' => 'string',
+            'carPark' => 'sometimes|nullable|boolean',
+            'petFriendly' => 'sometimes|nullable|boolean',
+            'wifi' => 'sometimes|nullable|string',
+            'cake' => 'sometimes|nullable|boolean',
+            'outdoorSeating' => 'sometimes|nullable|boolean',
+            'indoorSeating' => 'sometimes|nullable|boolean',
+            'openTime' => 'sometimes|nullable|date_format:H:i',
+            'closeTime' => 'sometimes|nullable|date_format:H:i',
+            'overNight' => 'sometimes|nullable|boolean'
         ]);
 
-        $coffeeShop->update($validated);
+        $coffeeShop->fill($validated);
+        $coffeeShop->save();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Coffee shop updated successfully',
-            'data' => $coffeeShop
+            'data' => $coffeeShop->fresh()
         ]);
     }
 
